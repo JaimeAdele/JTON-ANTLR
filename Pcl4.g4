@@ -14,6 +14,10 @@ declarations  : ;
 statement : compoundStatement
           | assignmentStatement
           | repeatStatement
+          | whileStatement
+          | forStatement
+          | ifStatement
+          | caseStatement
           | writeStatement
           | writelnStatement
           | emptyStatement
@@ -28,9 +32,9 @@ repeatStatement     : REPEAT statementList UNTIL expression ;
 whileStatement      : WHILE expression DO statementList ;
 forStatement        : FOR rangeExpression DO statementList ;
 ifStatement         : IF expression THEN statementList (ELSE statementList)? ;
-caseStatement       : CASE expression OF caseBranch+ ;
+caseStatement       : CASE expression OF caseBranch+ END;
 
-caseBranch          : ( INTEGER | CHARACTER ) ':' statementList ;
+caseBranch          : (( number | CHARACTER ) | ((number | CHARACTER) ','))+  ':' statementList ;
 
 lhs : variable ;
 rhs : expression ;
