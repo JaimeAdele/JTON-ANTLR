@@ -68,6 +68,43 @@ public class Executor extends Pcl4BaseVisitor<Object>
         return null;
     }
 
+    @Override
+    public Object visitForStatement(Pcl4Parser.ForStatementContext ctx) {
+        ParseTree listCtx = ctx.statementList();
+        int limit = Integer.parseInt(ctx.rangeExpression().simpleExpression().getText());
+        int initialValue = Integer.parseInt(ctx.rangeExpression().assignmentStatement().rhs().expression().getText());
+//        System.out.println("initialValue is " + initialValue);
+//        System.out.println("limit is " + limit);
+        int i = initialValue;
+        if (ctx.rangeExpression().TO() != null) {
+//            System.out.println("TO is running");
+            while (i < limit) {
+                visit(listCtx);
+                i++;
+            }
+        } else {
+//            System.out.println("DOWNTO is running");
+            while (i > limit) {
+                visit(listCtx);
+                i--;
+            }
+        }
+//
+//        if (ctx.compoundStatement() != null) {
+//            listCtx = ctx.compoundStatement();
+//        } else {
+//            listCtx = ctx.statement();
+//        }
+//        boolean value = (Boolean) visit(ctx.expression());
+//
+//        while (value) {
+//            visit(listCtx);
+//            value = (Boolean) visit(ctx.expression());
+//        }
+
+        return null;
+    }
+
     @Override 
     public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx)
     {
