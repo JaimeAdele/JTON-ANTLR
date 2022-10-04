@@ -76,19 +76,19 @@ public class Executor extends Pcl4BaseVisitor<Object>
         } else {
             listCtx = ctx.statement();
         }
-        int limit = Integer.parseInt(ctx.rangeExpression().simpleExpression().getText());
         int initialValue = Integer.parseInt(ctx.rangeExpression().assignmentStatement().rhs().expression().getText());
-        System.out.println("initialValue is " + initialValue);
-        System.out.println("limit is " + limit);
+        int limit = Integer.parseInt(ctx.rangeExpression().simpleExpression().getText());
+//        System.out.println("initialValue is " + initialValue);
+//        System.out.println("limit is " + limit);
         int i = initialValue;
         if (ctx.rangeExpression().TO() != null) {
-            System.out.println("TO is running");
+//            System.out.println("TO is running");
             while (i < limit) {
                 visit(listCtx);
                 i++;
             }
         } else {
-            System.out.println("DOWNTO is running");
+//            System.out.println("DOWNTO is running");
             while (i > limit) {
                 visit(listCtx);
                 i--;
@@ -97,6 +97,42 @@ public class Executor extends Pcl4BaseVisitor<Object>
 
         return null;
     }
+
+//    @Override
+//    public Object visitCaseStatement(Pcl4Parser.CaseStatementContext ctx) {
+//
+////        ctx.caseBranch();
+////        boolean value = (Boolean) visit(ctx.expression());
+////
+////        boolean foundMatch = false;
+////        for (int i=1; i<ctx.caseBranch().size() && !foundMatch; i++){
+////            if (value == ctx.caseBranch(i))
+////
+////
+////        }
+////        return null;
+////
+////
+////
+////        visit(ctx.expression());
+////        for (int i = 0; i < ctx.caseBranch().size(); i++) {
+////            if (visit(ctx.expression()) == )
+////        }
+////
+////        ParseTree listCtx;
+////        if (ctx.compoundStatement() != null) {
+////            listCtx = ctx.compoundStatement();
+////        } else {
+////            listCtx = ctx.statement();
+////        }
+////        boolean value = (Boolean) visit(ctx.expression());
+////
+////        while (value) {
+////            visit(listCtx);
+////            value = (Boolean) visit(ctx.expression());
+////        }
+//        return null;
+//    }
 
     @Override 
     public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx)
