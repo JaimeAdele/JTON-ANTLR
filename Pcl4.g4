@@ -29,7 +29,7 @@ emptyStatement    : ;
 statementList       : statement ( ';' statement )* ;
 assignmentStatement : lhs ':=' rhs ;
 repeatStatement     : REPEAT statementList UNTIL expression ;
-whileStatement      : WHILE expression DO statementList ;
+whileStatement      : WHILE expression DO (compoundStatement | statement);
 forStatement        : FOR rangeExpression DO statementList ;
 ifStatement         : IF expression THEN statementList (ELSE statementList)? ;
 caseStatement       : CASE expression OF caseBranch+ END;

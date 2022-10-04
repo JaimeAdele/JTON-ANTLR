@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 import antlr4.*;
 import intermediate.symtab.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Executor extends Pcl4BaseVisitor<Object>
 {
@@ -45,6 +46,25 @@ public class Executor extends Pcl4BaseVisitor<Object>
             value = (Boolean) visit(ctx.expression());
         } while (!value);
         
+        return null;
+    }
+
+    @Override
+    public Object visitWhileStatement(Pcl4Parser.WhileStatementContext ctx)
+    {
+        ParseTree listCtx;
+        if (ctx.compoundStatement() != null) {
+            listCtx = ctx.compoundStatement();
+        } else {
+            listCtx = ctx.statement();
+        }
+        boolean value = (Boolean) visit(ctx.expression());
+
+        while (value) {
+            visit(listCtx);
+            value = (Boolean) visit(ctx.expression());
+        }
+
         return null;
     }
 
