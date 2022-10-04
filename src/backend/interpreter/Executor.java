@@ -93,18 +93,12 @@ public class Executor extends Pcl4BaseVisitor<Object>
             visit(listCtx);
 
         }
-//        if (ctx.compoundStatement() != null) {
-//            listCtx = ctx.compoundStatement();
-//        } else {
-//            listCtx = ctx.statement();
-//        }
-//        boolean value = (Boolean) visit(ctx.expression());
-//
-//        while (value) {
-//            visit(listCtx);
-//            value = (Boolean) visit(ctx.expression());
-//        }
+        return null;
+    }
 
+    @Override
+    public Object visitForStatement(Pcl4Parser.ForStatementContext ctx) {
+        visit(ctx.rangeExpression());
         return null;
     }
 
@@ -190,6 +184,41 @@ public class Executor extends Pcl4BaseVisitor<Object>
         }
         
         return operand1;
+    }
+
+    @Override
+    public Object visitRangeExpression(Pcl4Parser.RangeExpressionContext ctx)
+    {
+        ParseTree listCtx;
+        Pcl4Parser.ForStatementContext parent = (Pcl4Parser.ForStatementContext) ctx.getParent();
+
+
+        if (parent.compoundStatement() != null) {
+            listCtx = parent.compoundStatement();
+        } else {
+            listCtx = parent.statement();
+        }
+
+        visit(ctx.assignmentStatement());
+
+        Double value = (Double)visitVariable(ctx.assignmentStatement().lhs().variable());
+        Double i = 0.0;
+
+        if (ctx.TO() != null) {
+            while ((value + i) <= (Double) visit(ctx.simpleExpression())){
+                visit(listCtx);
+                assign(ctx.assignmentStatement().lhs().variable().getText(), value + 1.0);
+                value = (Double)visitVariable(ctx.assignmentStatement().lhs().variable());
+            }
+        } else {
+            while ((value - i) >= (Double) visit(ctx.simpleExpression())){
+                visit(listCtx);
+                assign(ctx.assignmentStatement().lhs().variable().getText(), value - 1.0);
+                value = (Double)visitVariable(ctx.assignmentStatement().lhs().variable());
+            }
+        }
+
+        return null;
     }
 
     @Override 
