@@ -30,8 +30,8 @@ statementList       : statement ( ';' statement )* ;
 assignmentStatement : lhs ':=' rhs ;
 repeatStatement     : REPEAT statementList UNTIL expression ;
 whileStatement      : WHILE expression DO (compoundStatement | statement);
-forStatement        : FOR rangeExpression DO statementList ;
-ifStatement         : IF expression THEN statementList (ELSE statementList)? ;
+forStatement        : FOR rangeExpression DO (compoundStatement | statement) ;
+ifStatement         : IF expression THEN (compoundStatement | statement) (ELSE (compoundStatement | statement))? ;
 caseStatement       : CASE expression OF caseBranch+ END;
 
 caseBranch          : (( number | CHARACTER ) | ((number | CHARACTER) ','))+  ':' statementList ;
