@@ -34,7 +34,7 @@ forStatement        : FOR rangeExpression DO (compoundStatement | statement) ;
 ifStatement         : IF expression THEN (compoundStatement | statement) (ELSE (compoundStatement | statement))? ;
 caseStatement       : CASE expression OF caseBranch+ END;
 
-caseBranch          : (( number | CHARACTER ) | ((number | CHARACTER) ','))+  ':' statementList ;
+caseBranch          : (( number | CHARACTER ) | ((number | CHARACTER) ','))+  ':' (compoundStatement | statement) ';'?;
 
 lhs : variable ;
 rhs : expression ;

@@ -5,6 +5,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import antlr4.*;
 import intermediate.symtab.*;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
+import java.util.List;
 
 public class Executor extends Pcl4BaseVisitor<Object>
 {
@@ -100,6 +103,43 @@ public class Executor extends Pcl4BaseVisitor<Object>
     public Object visitForStatement(Pcl4Parser.ForStatementContext ctx) {
         visit(ctx.rangeExpression());
         return null;
+    }
+
+    @Override
+    public Object visitCaseStatement(Pcl4Parser.CaseStatementContext ctx)
+    {
+        for (Pcl4Parser.CaseBranchContext branchCtx: ctx.caseBranch()){
+            boolean isExecuted = (boolean) visit(branchCtx);
+            if (isExecuted)
+                break;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Object visitCaseBranch(Pcl4Parser.CaseBranchContext ctx)
+    {
+        Pcl4Parser.CaseStatementContext parCtx = (Pcl4Parser.CaseStatementContext) ctx.getParent();
+        Object expression_value = visit(parCtx.expression());
+        List<Pcl4Parser.NumberContext> numbers = ctx.number();
+        for (Pcl4Parser.NumberContext number : numbers) {
+            Double value = (Double) visitNumber(number);
+            if (expression_value.equals(value)) {
+                ParseTree listCtx;
+                if (ctx.compoundStatement() != null) {
+                    listCtx = ctx.compoundStatement();
+                } else {
+                    listCtx = ctx.statement();
+                }
+                visit(listCtx);
+
+                return true;
+            }
+        }
+
+
+        return false;
     }
 
     @Override 
